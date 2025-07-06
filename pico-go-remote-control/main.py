@@ -11,6 +11,19 @@ red = Pin(2, Pin.OUT)
 yellow = Pin(3, Pin.OUT)
 green = Pin(4, Pin.OUT)
 
+# LED Test
+red.off()
+yellow.off()
+green.off()
+sleep(0.1)
+red.on()
+yellow.on()
+green.on()
+sleep(0.5)
+red.off()
+yellow.off()
+green.off()
+
 
 # === WLAN-Zugangsdaten aus externer Datei ===
 def read_wifi_config(filename="wlan.ini"):
@@ -34,22 +47,24 @@ wlan.connect(ssid, password)
 
 print("📶 Verbinde mit WLAN...")
 wait_time = 0
-while not wlan.isconnected() and wait_time < 15:
+while not wlan.isconnected() and wait_time < 20:
     print(".", end="")
     yellow.on()
-    sleep(1)
+    sleep(0.5)
     yellow.off()
+    sleep(0.5)
     wait_time += 1
+
+yellow.off()
 
 if not wlan.isconnected():
     print("\n❌ WLAN-Verbindung fehlgeschlagen.")
+    red.on()
     raise RuntimeError("Keine WLAN-Verbindung")
-    while True:
-        red.on()
-        sleep(0.5)
 else:
     print("\n✅ Verbunden mit IP:", wlan.ifconfig()[0])
     green.on()
+
 
 # === Ziel: IP des fahrenden Pico Go ===
 PICO_GO_IP = "192.168.178.186"
