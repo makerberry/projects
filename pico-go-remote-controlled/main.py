@@ -63,21 +63,13 @@ class PicoGo:
         self.BIN1.value(1)
 
     def left(self, speed):
-        self.PWMA.duty_u16(int(speed * 0xFFFF / 100))
-        self.PWMB.duty_u16(int(speed * 0xFFFF / 100))
-        self.AIN2.value(0)
-        self.AIN1.value(1)
-        self.BIN2.value(1)
-        self.BIN1.value(0)
+        # Linkes Rad langsamer, rechtes Rad normal
+        self.setMotor(speed // 2, speed)
 
     def right(self, speed):
-        self.PWMA.duty_u16(int(speed * 0xFFFF / 100))
-        self.PWMB.duty_u16(int(speed * 0xFFFF / 100))
-        self.AIN2.value(1)
-        self.AIN1.value(0)
-        self.BIN2.value(0)
-        self.BIN1.value(1)
-
+        # Rechtes Rad langsamer, linkes Rad normal
+        self.setMotor(speed, speed // 2)
+    
     def stop(self):
         self.PWMA.duty_u16(0)
         self.PWMB.duty_u16(0)
@@ -86,6 +78,24 @@ class PicoGo:
         self.BIN2.value(0)
         self.BIN1.value(0)
 
+    def setMotor(self, left, right):
+        if left >= 0:
+            self.AIN1.value(0)
+            self.AIN2.value(1)
+            self.PWMA.duty_u16(int(left * 0xFFFF / 100))
+        else:
+            self.AIN1.value(1)
+            self.AIN2.value(0)
+            self.PWMA.duty_u16(int(-left * 0xFFFF / 100))
+
+        if right >= 0:
+            self.BIN1.value(0)
+            self.BIN2.value(1)
+            self.PWMB.duty_u16(int(right * 0xFFFF / 100))
+        else:
+            self.BIN1.value(1)
+            self.BIN2.value(0)
+            self.PWMB.duty_u16(int(-right * 0xFFFF / 100))
 
 # === WLAN-Verbindung ===
 
@@ -214,8 +224,25 @@ while True:
         car.stop()
     elif "GET /stop" in request_line:
         car.stop()
+    elif "GET /forwardleft" in request_line:
+        car.setMotor(30, 50)
+        utime.sleep(0.5)
+        car.stop()
+    elif "GET /forwardright" in request_line:
+        car.setMotor(50, 30)
+        utime.sleep(0.5)
+        car.stop()
+    elif "GET /backwardleft" in request_line:
+        car.setMotor(-30, -50)
+        utime.sleep(0.5)
+        car.stop()
+    elif "GET /backwardright" in request_line:
+        car.setMotor(-50, -30)
+        utime.sleep(0.5)
+        car.stop()
 
     # Immer HTML ausliefern
     response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n" + html
     client.send(response)
     client.close()
+
