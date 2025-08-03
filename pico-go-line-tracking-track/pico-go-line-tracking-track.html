@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pico Go Linienfolger - 90° Module</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .module {
+        width: 210mm;
+        height: 297mm;
+        background: white;
+        margin: 20px auto;
+        position: relative;
+        border: 2px solid #333;
+        page-break-after: always;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .module svg {
+        width: 100%;
+        height: 100%;
+      }
+      .module-title {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: white;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        border: 2px solid #000;
+        z-index: 10;
+        border-radius: 3px;
+      }
+      .instructions {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        border: 1px solid #ddd;
+      }
+      .print-button {
+        background: #2196f3;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 10px 10px 10px 0;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .print-button:hover {
+        background: #1976d2;
+      }
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+      .module-preview {
+        background: white;
+        padding: 15px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+      .module-preview svg {
+        width: 150px;
+        height: 200px;
+        border: 1px solid #ccc;
+      }
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+          background: white;
+        }
+        .instructions,
+        .print-button,
+        .module-grid {
+          display: none;
+        }
+        .module {
+          margin: 0;
+          border: none;
+          box-shadow: none;
+          page-break-after: always;
+        }
+        .module-title {
+          border: 1px solid #000;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="instructions">
+        <h1>Pico Go Linienfolger - 90° Kurs-Module</h1>
+        <p><strong>4 Module für präzisen Kursaufbau:</strong></p>
+
+        <div class="module-grid">
+          <div class="module-preview">
+            <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+              <rect width="210" height="297" fill="white" stroke="#ccc" />
+              <rect x="95" y="0" width="20" height="297" fill="black" />
+            </svg>
+            <h3>Gerade</h3>
+          </div>
+          <div class="module-preview">
+            <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+              <rect width="210" height="297" fill="white" stroke="#ccc" />
+              <path
+                d="M 115 0 L 95 0 L 95 148.5 Q 95 168.5 75 168.5 L 0 168.5 L 0 188.5 L 75 188.5 Q 115 188.5 115 148.5 Z"
+                fill="black"
+              />
+            </svg>
+            <h3>90° Links</h3>
+          </div>
+          <div class="module-preview">
+            <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+              <rect width="210" height="297" fill="white" stroke="#ccc" />
+              <path
+                d="M 95 0 L 115 0 L 115 148.5 Q 115 168.5 135 168.5 L 210 168.5 L 210 188.5 L 135 188.5 Q 95 188.5 95 148.5 Z"
+                fill="black"
+              />
+            </svg>
+            <h3>90° Rechts</h3>
+          </div>
+          <div class="module-preview">
+            <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+              <rect width="210" height="297" fill="white" stroke="#ccc" />
+              <rect x="95" y="0" width="20" height="297" fill="black" />
+              <rect x="0" y="138.5" width="210" height="20" fill="black" />
+            </svg>
+            <h3>Kreuzung</h3>
+          </div>
+        </div>
+
+        <p><strong>Druckanleitung:</strong></p>
+        <ul>
+          <li>✓ Verwenden Sie weißes DIN A4 Papier (80g empfohlen)</li>
+          <li>✓ Drucken mit 100% Skalierung (nicht "An Seite anpassen")</li>
+          <li>✓ Linienbreite: 20mm - optimal für Pico Go Sensoren</li>
+          <li>✓ 90° Kurven für präzise Richtungsänderungen</li>
+          <li>✓ Module lassen sich perfekt aneinanderfügen</li>
+        </ul>
+
+        <button class="print-button" onclick="window.print()">
+          📄 Alle 4 Module als PDF drucken
+        </button>
+        <button class="print-button" onclick="printSingle('gerade')">
+          Nur Gerade drucken
+        </button>
+        <button class="print-button" onclick="printSingle('links90')">
+          Nur 90° Links drucken
+        </button>
+        <button class="print-button" onclick="printSingle('rechts90')">
+          Nur 90° Rechts drucken
+        </button>
+        <button class="print-button" onclick="printSingle('kreuzung')">
+          Nur Kreuzung drucken
+        </button>
+      </div>
+
+      <!-- Modul 1: Gerade Strecke -->
+      <div class="module" id="gerade">
+        <div class="module-title">Modul 1: Gerade Strecke</div>
+        <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+          <rect width="210" height="297" fill="white" />
+          <rect x="95" y="0" width="20" height="297" fill="black" />
+        </svg>
+      </div>
+
+      <!-- Modul 2: 90° Linkskurve -->
+      <div class="module" id="links90">
+        <div class="module-title">Modul 2: 90° Linkskurve</div>
+        <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+          <rect width="210" height="297" fill="white" />
+          <path
+            d="M 115 0 L 95 0 L 95 148.5 Q 95 168.5 75 168.5 L 0 168.5 L 0 188.5 L 75 188.5 Q 115 188.5 115 148.5 Z"
+            fill="black"
+          />
+        </svg>
+      </div>
+
+      <!-- Modul 3: 90° Rechtskurve -->
+      <div class="module" id="rechts90">
+        <div class="module-title">Modul 3: 90° Rechtskurve</div>
+        <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+          <rect width="210" height="297" fill="white" />
+          <path
+            d="M 95 0 L 115 0 L 115 148.5 Q 115 168.5 135 168.5 L 210 168.5 L 210 188.5 L 135 188.5 Q 95 188.5 95 148.5 Z"
+            fill="black"
+          />
+        </svg>
+      </div>
+
+      <!-- Modul 4: Kreuzung -->
+      <div class="module" id="kreuzung">
+        <div class="module-title">Modul 4: Kreuzung</div>
+        <svg viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
+          <rect width="210" height="297" fill="white" />
+          <rect x="95" y="0" width="20" height="297" fill="black" />
+          <rect x="0" y="138.5" width="210" height="20" fill="black" />
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      function printSingle(moduleId) {
+        // Alle Module ausblenden
+        const modules = document.querySelectorAll(".module");
+        modules.forEach((m) => (m.style.display = "none"));
+
+        // Nur gewähltes Modul anzeigen
+        document.getElementById(moduleId).style.display = "block";
+
+        // Drucken
+        window.print();
+
+        // Alle Module wieder anzeigen
+        setTimeout(() => {
+          modules.forEach((m) => (m.style.display = "block"));
+        }, 1000);
+      }
+    </script>
+  </body>
+</html>
